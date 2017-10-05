@@ -169,7 +169,7 @@ export default class Marquee extends Component {
                 </Animated.View>
             </View>
         );
-    },
+    }
 }
 
 Marquee.defaultProps = {
