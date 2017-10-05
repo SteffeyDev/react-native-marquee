@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const ReactNative = require('react-native');
 const {
     StyleSheet,
@@ -26,9 +27,9 @@ function until (test, iterator, callback) {
 
 module.exports = React.createClass({
     propTypes: {
-        children: React.PropTypes.string.isRequired,
-        speed: React.PropTypes.number,
-        spaceRatio: React.PropTypes.number,
+        children: PropTypes.string.isRequired,
+        speed: PropTypes.number,
+        spaceRatio: PropTypes.number,
     },
     getDefaultProps () {
         return {
