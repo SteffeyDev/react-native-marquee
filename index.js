@@ -24,7 +24,7 @@ function until (test, iterator, callback) {
     }
 }
 
-export default Marquee extends Component {
+export default class Marquee extends Component {
     constructor(props) {
         super(props)
         
