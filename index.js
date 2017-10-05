@@ -1,16 +1,15 @@
 'use strict';
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactNative = require('react-native');
-const {
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import {
     StyleSheet,
     View,
     Text,
     Animated,
     Easing,
-} = ReactNative;
-const _ = require('lodash');
+} from 'react-native';
+import _ from 'lodash';
 
 function until (test, iterator, callback) {
     if (!test()) {
@@ -25,27 +24,19 @@ function until (test, iterator, callback) {
     }
 }
 
-module.exports = React.createClass({
-    propTypes: {
-        children: PropTypes.string.isRequired,
-        speed: PropTypes.number,
-        spaceRatio: PropTypes.number,
-    },
-    getDefaultProps () {
-        return {
-            speed: 30,
-            spaceRatio: 0.5,
-        };
-    },
-    getInitialState () {
+export default Marquee extends Component {
+    constructor(props) {
+        super(props)
+        
         this.alpha = {};
-        return {
+        this.state = {
             left1: new Animated.Value(0),
             left2: new Animated.Value(0),
-            list: this.props.children.split(''),
-        };
-    },
-    componentWillReceiveProps (nextProps) {
+            list: this.props.children.split('')
+        }
+    }
+    
+    componentWillReceiveProps(nextProps) {
         if (this.props.children != nextProps.children) {
             this.animateEnable = false;
             this.width = 0;
@@ -65,8 +56,9 @@ module.exports = React.createClass({
                 });
             });
         }
-    },
-    onLayout (i, e) {
+    }
+    
+    onLayout(i, e) {
         this.alpha[i] = e.nativeEvent.layout.width;
         if (_.size(this.alpha) === this.state.list.length) {
             this.twidth = _.sum(_.values(this.alpha));
@@ -80,15 +72,17 @@ module.exports = React.createClass({
                 );
             }
         }
-    },
-    onLayoutContainer (e) {
+    }
+    
+    onLayoutContainer(e) {
         if (!this.width) {
             this.width = e.nativeEvent.layout.width;
             this.spaceWidth = this.props.spaceRatio * this.width;
             this.setState({ left1: new Animated.Value(0) });
             this.setState({ left2: new Animated.Value(this.width) });
         }
-    },
+    }
+    
     startMoveFirstLabelHead () {
         const { width, twidth, props } = this;
         const { speed } = props;
@@ -103,7 +97,8 @@ module.exports = React.createClass({
                 this.moveSecondLabelHead(),
             );
         });
-    },
+    }
+    
     moveFirstLabelHead () {
         const { width, twidth, props } = this;
         const { speed } = props;
@@ -117,7 +112,8 @@ module.exports = React.createClass({
                 this.moveSecondLabelHead(),
             );
         });
-    },
+    }
+    
     moveFirstLabelTail () {
         const { width, twidth, props } = this;
         const { speed } = props;
@@ -128,7 +124,8 @@ module.exports = React.createClass({
         }).start(() => {
             this.animateEnable && this.setState({ left1: new Animated.Value(width) });
         });
-    },
+    }
+    
     moveSecondLabelHead () {
         const { width, twidth, props } = this;
         const { speed } = props;
@@ -142,7 +139,8 @@ module.exports = React.createClass({
                 this.moveSecondLabelTail(),
             );
         });
-    },
+    }
+    
     moveSecondLabelTail () {
         const { width, twidth, props } = this;
         const { speed } = props;
@@ -153,7 +151,8 @@ module.exports = React.createClass({
         }).start(() => {
             this.animateEnable && this.setState({ left2: new Animated.Value(twidth) });
         });
-    },
+    }
+    
     render () {
         const { left1, left2, list } = this.state;
         const s = StyleSheet.flatten(this.props.style);
@@ -171,4 +170,15 @@ module.exports = React.createClass({
             </View>
         );
     },
-});
+}
+
+Marquee.defaultProps = {
+  speed: 30,
+  spaceRatio: 0.5
+};
+
+Marquee.propTypes = {
+  children: PropTypes.string.isRequired,
+  speed: PropTypes.number,
+  spaceRatio: PropTypes.number
+};
